@@ -1,7 +1,7 @@
 <template>
-  <HelloWorld />
+  <ToDoList />
 </template>
 
 <script setup>
-  import HelloWorld from '@/components/HelloWorld.vue'
+  import ToDoList from '@/components/ToDoList.vue'
 </script>
