@@ -98,9 +98,6 @@
                       </template>
                       Add
                     </v-btn>
-                    
-                    <!-- <v-btn color="red" class="ma-1 pa-2" @click="closeDialog">Cancel</v-btn> -->
-                    <!-- <v-btn color="blue" type="submit" class="ma-1 pa-2" @click="submit">Add</v-btn> -->
                   </div>
             </v-form>
           </v-sheet>

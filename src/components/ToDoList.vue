@@ -20,13 +20,10 @@
     </template>
   </v-app-bar>
 
-  <v-container>
-    <v-snackbar
+  <v-snackbar
       v-model="snackbar"
       :color="color"
-      absolute
-      right
-      top
+      location="right bottom"
     >
       {{ text }}
       <template v-slot:actions>
@@ -38,6 +35,9 @@
         </v-btn>
       </template>
     </v-snackbar>
+
+  <v-container>
+    
     <v-table>
       <thead>
         <tr>
@@ -123,7 +123,7 @@
   </v-container>
 
   <add-task v-model="showAddTask" @show-add-task="captureShowAddTask" @todo-list="captureTodoList" @snackbar="showSnackbar" />
-  <edit-task v-model="showEditTask" @show-edit-task="captureShowEditTask" @update-todo="captureEditedTodo" @snackbar="showSnackbar"/>
+  <edit-task v-model="showEditTask" @show-edit-task="captureShowEditTask" @update-todo="captureEditedTodo" @snackbar="showSnackbar" :todo="todoToUpdate"/>
 </template>
 
 <script>
@@ -137,13 +137,14 @@
     },
     data() {
       return {
-        snackbar: false,
+        snackbar: true,
         text: '',
         color: '',
         showAddTask: false,
         showEditTask: false,
         todoList: [],
         index: 0,
+        todoToUpdate: {},
       }
     },
     methods: {
@@ -177,6 +178,7 @@
       },
       updateTodoList(todo){
         const index = this.todoList.indexOf(todo);
+        this.todoToUpdate = todo;
         this.index = index;
         this.showEditTask = true;
       },
