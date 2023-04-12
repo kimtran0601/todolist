@@ -70,18 +70,14 @@
           <td>{{ todo.description }}</td>
           <td>{{ todo.date }}</td>
           <td>{{ todo.priority }}</td>
-          <td style="align-self: center; justify-self: center;">
-            <div class="text-center">
+          <td>
               <v-checkbox
                 v-model="todo.isCompleted"
                 :true-value="true"
                 :false-value="false"
                 @change="deleteRow(todo)"
-                align-self="center"
-                justify-self="center"
+                class="d-inline-flex"
               ></v-checkbox>
-            </div>
-            
           </td>
           <td>
             <v-col>

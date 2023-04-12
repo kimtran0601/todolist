@@ -134,12 +134,7 @@
         description: '',
         date: '',
         priority: '',
-        // todoList: [],
-        todoList: [{
-          title: "abc",
-          description: "abc",
-          date: new Date("01/05/2023")
-        }],
+        todoList: [],
         titles: new Set()
       }
     },
