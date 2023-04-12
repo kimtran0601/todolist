@@ -7,32 +7,14 @@
         >
           <div class="d-block pa-2 bg-primary">
             <v-card-title>
-              <v-icon icon="mdi-plus-circle"/>
-              Add Task
+              <v-icon icon="mdi-file-edit-outline"/>
+              Edit Task
             </v-card-title>
           </div>
 
           <v-card-text>
               <v-sheet width="300" class="mx-auto">
               <v-form @submit.prevent="submit">
-                  <v-text-field
-                      v-model="title"
-                      :rules="[title => {
-                        if (!title) {
-                            return 'Title is required';
-                        }
-                        if (titles.has(title)) {
-                            return 'Duplicate title';
-                        }
-                        else{
-                          titles.add(title);
-                        }
-                        return true;
-                    }]"
-                      label="Title"
-                      required
-                  ></v-text-field>
-
                   <v-text-field
                       v-model="description"
                       :rules="[v => !!v || 'Description is required']"
@@ -55,7 +37,6 @@
                     label="Deadline"
                     required
                 ></v-text-field>
-
                   <v-radio-group
                   v-model="priority"
                   :rules="[v => !!v || 'Priority is required']"
@@ -92,14 +73,14 @@
 
                     <v-btn
                       class="ma-1 pa-2" 
-                      prepend-icon="mdi-plus"
+                      prepend-icon="mdi-file-edit-outline"
                       color="blue"
                       type="submit"
                     >
                       <template v-slot:prepend>
                         <v-icon></v-icon>
                       </template>
-                      Add
+                      Edit
                     </v-btn>
                     
                     <!-- <v-btn color="red" class="ma-1 pa-2" @click="closeDialog">Cancel</v-btn> -->
@@ -108,14 +89,22 @@
             </v-form>
           </v-sheet>
           </v-card-text>
+
+          <v-card-actions>
+            
+            
+          </v-card-actions>
       </v-card>
     </v-dialog>
+
 </template>
 
 <script>
+
   export default {
     props :{
-      value : Boolean
+      value : Boolean,
+      todo: Object,
     },
     computed: {
       show: {
@@ -125,60 +114,50 @@
         set(value){
           this.$emit('input', value);
         }
-      }
+      },
     },
     data() {
       return {
-        snackbar: {
-          text: '',
-          color: '',
-        },
-        showAddTask: false,
+        showEditTask: false,
         column: null,
         inline: null,
-        title: '',
         description: '',
         date: '',
         priority: '',
-        // todoList: [],
-        todoList: [{
-          title: "abc",
-          description: "abc",
-          date: new Date("01/05/2023")
-        }],
-        titles: new Set()
+        updatedTodo: {
+            description: '',
+            date: '', 
+            priority: ''
+        },
       }
     },
     methods: {
       submit() {
-        if (this.title && !this.titles.has(this.title) && this.description && this.date && this.priority){
-          const newTodo = {
-            title: this.title,
+        if (this.description && this.date && this.priority){
+          const editedTodo = {
             description: this.description,
             date: this.date,
             priority: this.priority
           }
-          this.todoList.push(newTodo)
+          this.updatedTodo = editedTodo;
 
-          this.title = '';
           this.description = '';
           this.date = '';
           this.priority = '';
 
           this.closeDialog();
-          this.snackbar.text = "Task was added successfully";
-          this.snackbar.color = "success"
-          // this.$emit("snackbar-text", this.snackbar.text);
-          this.$emit("snackbar", this.snackbar);
+
+          this.$emit("update-todo", this.updatedTodo)
         }
+        
       },
       closeDialog(){
-        console.log(this.show);
-        this.$emit("show-add-task", this.show);
+        this.$emit("show-edit-task", this.showEditTask);
+        
       },
       sendToDoList(){
-        this.$emit("todo-list", this.todoList);
-      }
+        this.$emit("update-todo-list", this.todoList);
+      },
     },
     mounted(){
       this.sendToDoList();
@@ -186,4 +165,3 @@
   }
 
 </script>
-

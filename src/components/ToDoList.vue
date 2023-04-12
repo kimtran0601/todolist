@@ -21,6 +21,23 @@
   </v-app-bar>
 
   <v-container>
+    <v-snackbar
+      v-model="snackbar"
+      :color="color"
+      absolute
+      right
+      top
+    >
+      {{ text }}
+      <template v-slot:actions>
+        <v-btn
+          variant="text"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
     <v-table>
       <thead>
         <tr>
@@ -74,6 +91,7 @@
                     prepend-icon="mdi-file-edit-outline"
                     color="blue"
                     size="small"
+                    @click.stop="updateTodoList(todo)"
                   >
                     <template v-slot:prepend>
                       <v-icon></v-icon>
@@ -88,6 +106,7 @@
                     prepend-icon="mdi-alpha-x-box-outline"
                     color="red"
                     size="small"
+                    @click.stop="deleteRow(todo)"
                   >
                     <template v-slot:prepend>
                       <v-icon></v-icon>
@@ -103,32 +122,72 @@
     </v-table>
   </v-container>
 
-  <add-task v-model="showAddTask" @todo-list="captureTodoList" />
+  <add-task v-model="showAddTask" @show-add-task="captureShowAddTask" @todo-list="captureTodoList" @snackbar="showSnackbar" />
+  <edit-task v-model="showEditTask" @show-edit-task="captureShowEditTask" @update-todo="captureEditedTodo"/>
 </template>
 
 <script>
   import AddTask from '@/components/AddTask.vue';
+  import EditTask from '@/components/EditTask.vue';
 
   export default {
     components: {
       AddTask,
+      EditTask
     },
     data() {
       return {
+        snackbar: false,
+        text: '',
+        color: '',
         showAddTask: false,
+        showEditTask: false,
         todoList: [],
+        editedTodo: {}
       }
     },
     methods: {
       captureTodoList(todoList){
         this.todoList = todoList;
-        console.log(this.todoList);
+      },
+      captureEditedTodo(updatedTodo){
+        this.editedTodo = updatedTodo;
+      },
+      captureShowAddTask(show){
+        this.showAddTask = show;
+      },
+      captureShowEditTask(show){
+        this.showEditTask = show;
+      },
+      showSnackbar(snackbar){
+        this.snackbar = true;
+        this.text = snackbar.text;
+        this.color = snackbar.color;
+        console.log(this.color);
       },
       deleteRow(todo){
-        
         const index = this.todoList.indexOf(todo);
         this.todoList.splice(index, 1);
-      }
+
+        this.snackbar = true;
+        this.text = "Task Deleted Successful";
+        this.color = "success"
+      },
+      updateTodoList(todo){
+        this.showEditTask = true;
+        if (this.editedTodo){
+          const index = this.todoList.indexOf(todo);
+          // this.todoList[index].description = this.editedTodo.description;
+          this.todoList[index].description = this.editedTodo.description;
+          this.todoList[index].date = this.editedTodo.date;
+          this.todoList[index].priority = this.editedTodo.priority;
+
+          // console.log({todolist: this.todoList});
+
+        }
+        
+        // todo.description = updateTodoList.description
+      },
     },
   }
 </script>
