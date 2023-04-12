@@ -129,6 +129,10 @@
             date: '', 
             priority: ''
         },
+        snackbar: {
+          text: '',
+          color: '',
+        },
       }
     },
     methods: {
@@ -148,6 +152,10 @@
           this.closeDialog();
 
           this.$emit("update-todo", this.updatedTodo)
+
+          this.snackbar.text = "Task was updated successfully";
+          this.snackbar.color = "success"
+          this.$emit("snackbar", this.snackbar);
         }
         
       },

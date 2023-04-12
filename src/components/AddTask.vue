@@ -24,9 +24,6 @@
                         if (titles.has(title)) {
                             return 'Duplicate title';
                         }
-                        else{
-                          titles.add(title);
-                        }
                         return true;
                     }]"
                       label="Title"
@@ -159,6 +156,7 @@
             priority: this.priority
           }
           this.todoList.push(newTodo)
+          this.titles.add(this.title)
 
           this.title = '';
           this.description = '';
@@ -168,7 +166,6 @@
           this.closeDialog();
           this.snackbar.text = "Task was added successfully";
           this.snackbar.color = "success"
-          // this.$emit("snackbar-text", this.snackbar.text);
           this.$emit("snackbar", this.snackbar);
         }
       },

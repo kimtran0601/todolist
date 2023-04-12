@@ -123,7 +123,7 @@
   </v-container>
 
   <add-task v-model="showAddTask" @show-add-task="captureShowAddTask" @todo-list="captureTodoList" @snackbar="showSnackbar" />
-  <edit-task v-model="showEditTask" @show-edit-task="captureShowEditTask" @update-todo="captureEditedTodo"/>
+  <edit-task v-model="showEditTask" @show-edit-task="captureShowEditTask" @update-todo="captureEditedTodo" @snackbar="showSnackbar"/>
 </template>
 
 <script>
@@ -143,7 +143,7 @@
         showAddTask: false,
         showEditTask: false,
         todoList: [],
-        editedTodo: {}
+        index: 0,
       }
     },
     methods: {
@@ -151,7 +151,9 @@
         this.todoList = todoList;
       },
       captureEditedTodo(updatedTodo){
-        this.editedTodo = updatedTodo;
+        this.todoList[this.index].description = updatedTodo.description;
+        this.todoList[this.index].date = updatedTodo.date;
+        this.todoList[this.index].priority = updatedTodo.priority;
       },
       captureShowAddTask(show){
         this.showAddTask = show;
@@ -174,19 +176,9 @@
         this.color = "success"
       },
       updateTodoList(todo){
+        const index = this.todoList.indexOf(todo);
+        this.index = index;
         this.showEditTask = true;
-        if (this.editedTodo){
-          const index = this.todoList.indexOf(todo);
-          // this.todoList[index].description = this.editedTodo.description;
-          this.todoList[index].description = this.editedTodo.description;
-          this.todoList[index].date = this.editedTodo.date;
-          this.todoList[index].priority = this.editedTodo.priority;
-
-          // console.log({todolist: this.todoList});
-
-        }
-        
-        // todo.description = updateTodoList.description
       },
     },
   }
