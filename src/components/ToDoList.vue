@@ -137,7 +137,7 @@
     },
     data() {
       return {
-        snackbar: true,
+        snackbar: false,
         text: '',
         color: '',
         showAddTask: false,
